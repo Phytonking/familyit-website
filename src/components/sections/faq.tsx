@@ -1,37 +1,54 @@
-import { faqs } from "@/content/landing";
 import { Icon } from "@/components/icons";
-import { Container, SectionHeading } from "@/components/ui";
+import { Container } from "@/components/ui";
+
+type FaqItem = { question: string; answer: string };
 
 /** Native <details> accordion: keyboard accessible, no client JavaScript. */
-export function Faq() {
+export function FaqList({ faqs }: { faqs: FaqItem[] }) {
+  return (
+    <div className="divide-y divide-sage-deep border-y border-sage-deep">
+      {faqs.map((faq) => (
+        <details key={faq.question} className="group py-5">
+          <summary className="flex cursor-pointer items-start justify-between gap-6 rounded-lg text-left text-xl font-bold text-ink sm:text-2xl">
+            <span>{faq.question}</span>
+            <Icon
+              name="chevron"
+              className="details-chevron mt-1 size-7 shrink-0 text-pine transition-transform"
+            />
+          </summary>
+          <p className="mt-4 max-w-[62ch] text-lg leading-relaxed text-ink-soft sm:text-xl">
+            {faq.answer}
+          </p>
+        </details>
+      ))}
+    </div>
+  );
+}
+
+export function FaqSection({
+  faqs,
+  heading = "Questions people ask",
+  tone = "sage",
+}: {
+  faqs: FaqItem[];
+  heading?: string;
+  tone?: "sage" | "paper";
+}) {
   return (
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="scroll-mt-20 py-20 sm:py-24"
+      className={`scroll-mt-24 py-20 sm:py-28 ${tone === "sage" ? "bg-sage" : ""}`}
     >
-      <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-        <SectionHeading
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <h2
           id="faq-heading"
-          eyebrow="Questions"
-          title="Frequently asked questions"
-          lede="Still curious about something? Call or email and a real person will answer."
-          align="left"
-        />
-
-        <div className="divide-y divide-line rounded-3xl bg-white px-6 shadow-soft ring-1 ring-line sm:px-8">
-          {faqs.map((faq, index) => (
-            <details key={faq.question} className="group py-5" open={index === 0}>
-              <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-lg text-left font-display text-lg font-semibold text-ink">
-                <span>{faq.question}</span>
-                <Icon
-                  name="chevron"
-                  className="faq-chevron size-5 shrink-0 text-teal transition-transform duration-200"
-                />
-              </summary>
-              <p className="mt-3 leading-relaxed text-ink-soft">{faq.answer}</p>
-            </details>
-          ))}
+          className="text-3xl font-bold leading-tight tracking-tight text-pine text-balance sm:text-4xl lg:col-span-4"
+        >
+          {heading}
+        </h2>
+        <div className="lg:col-span-8">
+          <FaqList faqs={faqs} />
         </div>
       </Container>
     </section>

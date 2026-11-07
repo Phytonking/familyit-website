@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Nunito } from "next/font/google";
+import { Atkinson_Hyperlegible } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { siteGraph } from "@/lib/structured-data";
 import { JsonLd } from "@/components/json-ld";
@@ -7,13 +7,10 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import "./globals.css";
 
-const display = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const body = Nunito({
+// One typeface for everything. Designed by the Braille Institute for
+// low-vision readers, which fits an audience that includes older adults.
+const body = Atkinson_Hyperlegible({
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
@@ -30,15 +27,15 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.name,
   keywords: [
-    "family tech support",
-    "home IT support",
-    "home Wi-Fi setup",
-    "computer help for seniors",
-    "parental controls setup",
-    "smart home installation",
-    "remote tech support",
-    "in-home tech support",
-    siteConfig.address.addressLocality,
+    "technology care",
+    "tech support for seniors",
+    "tech help for elderly parents",
+    "accessible technology support",
+    "assistive technology setup",
+    "parental controls help",
+    "online safety for children",
+    "care home resident technology",
+    "family tech support waitlist",
   ],
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
@@ -71,15 +68,10 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  formatDetection: {
-    telephone: true,
-    email: true,
-    address: true,
-  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f6b5f",
+  themeColor: "#244b43",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
@@ -87,11 +79,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} h-full`}>
+    <html lang="en" className={`${body.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-pine focus:px-5 focus:py-3 focus:text-lg focus:font-bold focus:text-paper"
         >
           Skip to main content
         </a>

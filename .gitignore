@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# waitlist signups (local file provider) and design review screenshots
+/data/
+/design-screenshots/

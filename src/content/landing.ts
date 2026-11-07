@@ -1,161 +1,188 @@
 /**
- * Marketing copy for the landing page. Nothing here depends on real-world
- * facts (phone, address, prices); those live in `src/config/site.ts`.
+ * Home page copy. Outcome-level, no product specifics. Product specifics that
+ * are still unknown live in `siteConfig.product` as placeholders.
  */
 
-import type { IconName } from "@/components/icons";
+import type { AudienceId } from "@/content/audiences";
+import { siteConfig } from "@/config/site";
 
 export const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#faq", label: "Questions" },
 ] as const;
 
-export type Service = {
-  icon: IconName;
-  title: string;
-  description: string;
-  examples: string[];
+export const hero = {
+  headline: "Her phone updated overnight. Now she can't call you.",
+  lede:
+    "Small technology problems become big gaps in the lives of the people we love. FamilyIT is a care service for that technology, so staying connected, safe and independent doesn't depend on who happens to be free to help.",
+  primaryCta: "Join the waitlist",
+  secondaryCta: "See who it's for",
 };
 
-export const services: Service[] = [
+/** Real moments, written plainly. Rendered as a list, not cards. */
+export const problemMoments = [
   {
-    icon: "wifi",
-    title: "Home Wi-Fi and networking",
-    description:
-      "Dead spots, dropouts and slow streaming fixed for good. We survey your home, place or replace gear, and secure the whole network.",
-    examples: ["Mesh Wi-Fi setup", "Router security", "Guest networks"],
+    moment: "A pop-up says the computer has a virus and to call a number.",
+    consequence: "By the time anyone finds out, the bank has been called too.",
   },
   {
-    icon: "devices",
-    title: "Device setup and troubleshooting",
-    description:
-      "New phone, laptop, tablet or printer? We move your data, connect everything and make sure it all talks to each other.",
-    examples: ["Data transfer", "Printer setup", "Slow computer tune-ups"],
+    moment: "The video call connects, but there's no sound.",
+    consequence: "Sunday's catch-up becomes twenty minutes of \"can you hear me now?\"",
   },
   {
-    icon: "shield",
-    title: "Parental controls and online safety",
-    description:
-      "Age-appropriate screen time, content filters and app limits set up across every device, explained so you stay in control.",
-    examples: ["Screen Time and Family Link", "Content filters", "Safe gaming"],
+    moment: "The tablet wants a password nobody remembers.",
+    consequence: "Photos, messages and the one app she actually uses are locked away.",
   },
   {
-    icon: "lock",
-    title: "Backups and passwords",
-    description:
-      "Never lose photos or get locked out again. We set up automatic backups and a password manager the whole family can use.",
-    examples: ["Photo backups", "Password managers", "Two-factor login"],
+    moment: "A new game asks a nine-year-old to chat with strangers.",
+    consequence: "The settings that would stop it are six menus deep.",
   },
   {
-    icon: "heart",
-    title: "Help for older relatives",
-    description:
-      "Patient, unhurried support for parents and grandparents: video calls, large text, scam awareness and simple written guides.",
-    examples: ["Video calling", "Accessibility settings", "Scam protection"],
-  },
-  {
-    icon: "home",
-    title: "Smart-home setup",
-    description:
-      "Doorbells, thermostats, lights and speakers installed, connected and working together, with privacy settings sorted.",
-    examples: ["Smart speakers", "Cameras and doorbells", "Thermostats"],
+    moment: "A care team of twelve shares one laptop and one login.",
+    consequence: "Families call the front desk because nothing else works.",
   },
 ];
 
+export const problem = {
+  heading: "The problem isn't the people. It's that nobody is looking after the technology.",
+  body: [
+    "Phones, tablets, hearing aids, door cameras, patient portals: the people we care for live inside more technology than ever, and almost none of it was designed with them in mind. When it breaks, the job lands on whoever is nearest, usually a relative with their own full life.",
+    "The result is quiet. Calls that stop. A parent who says \"it's fine\" because asking again feels like a burden. A child whose safety settings were never finished. A care home where staff spend their shift on IT instead of on residents.",
+  ],
+};
+
+export const solution = {
+  heading: "A service that cares for the technology, so you can care for the person.",
+  body: [
+    "FamilyIT takes ongoing responsibility for the devices, accounts and connections in someone's life. Not a one-off fix, but a relationship: someone who knows their setup, notices when something changes, and explains things patiently, as many times as it takes.",
+    "We work with the person directly, in their language and at their pace, and keep the people who love them informed without taking over.",
+  ],
+  pillars: [
+    {
+      title: "Connected",
+      body: "Calls, messages and photos keep flowing. When something breaks, it gets fixed before it becomes a silence.",
+    },
+    {
+      title: "Safe",
+      body: "Scams, strangers and risky settings are watched for and dealt with, with the person's dignity and privacy intact.",
+    },
+    {
+      title: "Independent",
+      body: "People keep doing things for themselves. Help arrives in a way that builds confidence rather than dependence.",
+    },
+  ],
+};
+
+export const benefits = {
+  heading: "What changes, for everyone involved",
+  groups: [
+    {
+      who: "For the person",
+      items: [
+        "Help from someone who knows them and their devices, not a call center.",
+        "Explanations in plain words, repeated without judgement.",
+        "Fewer scary moments, and a clear plan for what to do when one happens.",
+      ],
+    },
+    {
+      who: "For family and caregivers",
+      items: [
+        "You stop being the only line of defense for every password and pop-up.",
+        "You hear about what matters, without having to check in constantly.",
+        "Distance stops deciding how much you can help.",
+      ],
+    },
+    {
+      who: "For care teams",
+      items: [
+        "Staff time goes back to residents instead of routers.",
+        "Residents stay in touch with their families on their own terms.",
+        "One accountable place for the technology questions families ask.",
+      ],
+    },
+  ],
+};
+
+export const audienceOverview: {
+  id: AudienceId;
+  title: string;
+  summary: string;
+  href: string;
+}[] = [
+  {
+    id: "seniors",
+    title: "Older relatives",
+    summary: "Staying connected and safe at home, with patient help that respects experience.",
+    href: "/solutions/seniors",
+  },
+  {
+    id: "disabilities",
+    title: "People with disabilities",
+    summary: "Technology set up around how each person communicates, moves and sees the world.",
+    href: "/solutions/disabilities",
+  },
+  {
+    id: "children",
+    title: "Children",
+    summary: "Safer screens and honest conversations, with settings that actually get finished.",
+    href: "/solutions/children",
+  },
+  {
+    id: "care-centers",
+    title: "Care centers",
+    summary: "Resident technology handled, families informed, staff back to the work that matters.",
+    href: "/solutions/care-centers",
+  },
+];
+
+/** A genuine sequence, so numbering is appropriate here. */
 export const steps = [
   {
-    title: "Tell us what's going on",
-    description:
-      "Call, email or use the form below. Describe the problem in your own words. No tech vocabulary needed.",
+    title: "Tell us about the person",
+    body: "Who they are, what they use, what tends to go wrong and who should be kept in the loop. Ten minutes, no jargon.",
   },
   {
-    title: "Pick remote or in-home",
-    description:
-      "Many issues are solved in a quick screen-share session. For Wi-Fi, new gear or hands-on jobs, we come to you.",
+    title: "We get to know their setup",
+    body: "We meet them, tidy up what's there, close the obvious gaps and write down how everything works in plain language.",
   },
   {
-    title: "We fix it and explain it",
-    description:
-      "You get a working setup plus a short, plain-English summary so you know what changed and what to do next time.",
-  },
-];
-
-export const trustPoints: { icon: IconName; title: string; description: string }[] = [
-  {
-    icon: "chat",
-    title: "Plain English, always",
-    description:
-      "We explain what we're doing as we go and never make you feel silly for asking.",
-  },
-  {
-    icon: "check",
-    title: "No fix, no fee",
-    description:
-      "If we can't solve the problem you booked us for, you don't pay for the session.",
-  },
-  {
-    icon: "clock",
-    title: "Patient by design",
-    description:
-      "Sessions are never rushed. Older relatives and nervous beginners are our speciality.",
-  },
-  {
-    icon: "badge",
-    title: "Background-checked technicians",
-    description:
-      "Everyone who visits your home is vetted, insured and happy to show ID at the door.",
-  },
-  {
-    icon: "lock",
-    title: "Your privacy respected",
-    description:
-      "We only access what's needed to fix the problem and we never keep copies of your data.",
-  },
-  {
-    icon: "sparkle",
-    title: "Follow-up included",
-    description:
-      "Something not quite right afterwards? Every job comes with 30 days of follow-up support.",
+    title: "We stay",
+    body: "Ongoing care: questions answered, changes noticed, problems fixed. You hear from us when it matters.",
   },
 ];
 
 export const faqs = [
   {
-    question: "Do you offer remote support or do you need to visit?",
+    question: "What is FamilyIT, in one sentence?",
     answer:
-      "Both. Most software problems, account issues and settings can be handled in a secure remote session where you watch everything we do. For Wi-Fi, hardware installs and smart-home work we come to your home.",
+      "An ongoing care service for the technology in the life of someone you love, so they stay connected, safe and independent without relying on whoever happens to be nearby.",
   },
   {
-    question: "Which devices and brands do you support?",
+    question: "Who is it for?",
     answer:
-      "Windows and Mac computers, iPhone and Android phones, iPads and tablets, smart TVs, printers, game consoles, and popular smart-home brands such as Google, Amazon, Apple, Ring and Nest.",
+      "Older relatives, people with disabilities, children, and the residents and staff of care centers. If you've ever been the family's unofficial IT department, it's for you too.",
   },
   {
-    question: "How quickly can you help?",
+    question: "Is this a one-off repair service?",
     answer:
-      "Remote sessions are often available the same day. In-home visits are usually scheduled within two to three working days, with priority slots for care-plan members.",
+      "No. We take ongoing responsibility rather than fixing one thing and leaving. That's what lets us notice changes early and build trust with the person over time.",
   },
   {
-    question: "Is remote access safe?",
+    question: "Do you talk to the person directly, or to me?",
     answer:
-      "Yes. We use a one-time session code that you start and can end at any moment. You see every click on your screen, and access disappears completely when the session finishes.",
+      "Both, and the balance is up to them. Many people prefer to deal with us themselves and have family kept informed. Others want a relative involved in every step. We follow their lead.",
   },
   {
-    question: "Can you help my parents even if I live far away?",
+    question: "How do you handle privacy?",
     answer:
-      "Absolutely. Many of our customers book on behalf of a relative. We coordinate with you, work patiently with them, and send you both a summary afterwards.",
+      "We access only what is needed, explain what we're doing, and never keep copies of personal data. The person decides what their family can see. Our privacy policy covers the waitlist too.",
   },
   {
-    question: "What happens if you can't fix the problem?",
-    answer:
-      "If we can't solve the issue you booked us for, you don't pay for that session. If the fix needs a part or a replacement device, we'll give you honest advice on what to buy and help set it up.",
+    question: "When does it launch, and where?",
+    answer: `${siteConfig.product.launchWindow}, starting in ${siteConfig.product.initialRegions}. ${siteConfig.product.deliveryNote} Waitlist members hear first.`,
   },
   {
-    question: "Do I need to sign a contract?",
-    answer:
-      "No. Single sessions and home visits are pay-as-you-go. The Family Care Plan is month to month and you can cancel any time.",
+    question: "What does it cost?",
+    answer: `${siteConfig.product.pricingNote} Joining the waitlist is free and carries no commitment.`,
   },
 ];

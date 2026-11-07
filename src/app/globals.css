@@ -1,66 +1,79 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Warm cream canvas, deep teal primary, apricot accent.
- * Exposed to Tailwind as utilities via @theme (e.g. bg-cream, text-ink).
+ * Design tokens.
+ * One typeface (Atkinson Hyperlegible Next, designed for low-vision readers).
+ * Paper white, two greens, one berry accent. No gradients, no decorative cards.
  */
 @theme {
-  --color-cream: #fbf7f0;
-  --color-cream-deep: #f3ebdd;
-  --color-ink: #1f2a30;
-  --color-ink-soft: #4a5a61;
-  --color-line: #e6dccb;
-  --color-teal: #0f6b5f;
-  --color-teal-deep: #0b5349;
-  --color-teal-soft: #d9efe9;
-  --color-apricot: #f4a261;
-  --color-apricot-soft: #fde9d6;
-  --color-apricot-deep: #b85f22;
+  --color-paper: #fbfaf7;
+  --color-sage: #e6ede6;
+  --color-sage-deep: #c9d6cb;
+  --color-pine: #244b43;
+  --color-pine-deep: #17352f;
+  --color-moss: #3e6b5e;
+  --color-berry: #7c3c5c;
+  --color-berry-deep: #5e2b45;
+  --color-ink: #1e2a28;
+  --color-ink-soft: #4c5a57;
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), Georgia, serif;
 
-  --shadow-soft:
-    0 1px 2px rgb(31 42 48 / 0.04), 0 12px 32px -12px rgb(31 42 48 / 0.18);
+  --shadow-card: 0 1px 0 rgb(30 42 40 / 0.06), 0 16px 40px -24px rgb(36 75 67 / 0.35);
+
+  --text-display: 3.25rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display-lg: 4.5rem;
+  --text-display-lg--line-height: 1.02;
+  --text-display-lg--letter-spacing: -0.025em;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 5.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
 body {
-  background-color: var(--color-cream);
+  background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Visible, consistent keyboard focus everywhere. */
+/* Keyboard focus: thick, high-contrast, consistent. */
 :focus-visible {
-  outline: 3px solid var(--color-apricot-deep);
+  outline: 3px solid var(--color-berry);
   outline-offset: 3px;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
 }
 
 ::selection {
-  background: var(--color-apricot-soft);
+  background: var(--color-sage-deep);
 }
 
-/* Native <details> FAQ: hide default marker, rotate chevron when open. */
+/* Native <details>: hide the default marker, rotate the chevron when open. */
 details > summary {
   list-style: none;
 }
 details > summary::-webkit-details-marker {
   display: none;
 }
-details[open] .faq-chevron {
+details[open] .details-chevron {
   transform: rotate(180deg);
 }

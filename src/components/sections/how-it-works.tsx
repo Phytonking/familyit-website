@@ -1,61 +1,50 @@
 import { steps } from "@/content/landing";
-import { siteConfig, telHref } from "@/config/site";
-import { Icon } from "@/components/icons";
-import { ButtonLink, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 
 export function HowItWorks() {
   return (
     <section
       id="how-it-works"
       aria-labelledby="how-heading"
-      className="scroll-mt-20 bg-teal py-20 text-white sm:py-24"
+      className="scroll-mt-24 py-20 sm:py-28"
     >
-      <Container>
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-apricot">
-            How it works
-          </p>
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
           <h2
             id="how-heading"
-            className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl text-balance"
+            className="text-3xl font-bold leading-tight tracking-tight text-pine text-balance sm:text-4xl"
           >
-            Three steps from &ldquo;it&apos;s broken&rdquo; to &ldquo;it just works&rdquo;
+            How it works
           </h2>
+          <p className="mt-4 max-w-[48ch] text-lg leading-relaxed text-ink-soft sm:text-xl">
+            The details will grow as we build, but the shape stays the same: get to know the
+            person, make things right, and stay.
+          </p>
         </div>
-
-        <ol className="mt-14 grid gap-8 md:grid-cols-3">
+        <ol className="lg:col-span-7">
           {steps.map((step, index) => (
-            <li key={step.title} className="relative">
+            <li
+              key={step.title}
+              className="grid grid-cols-[3.5rem_1fr] gap-x-5 border-t border-sage-deep py-7 first:border-t-0 first:pt-0 last:pb-0"
+            >
               <span
                 aria-hidden="true"
-                className="flex size-12 items-center justify-center rounded-2xl bg-white/10 font-display text-xl font-semibold text-apricot ring-1 ring-white/20"
+                className="flex size-14 items-center justify-center rounded-full bg-pine text-2xl font-bold text-paper"
               >
                 {index + 1}
               </span>
-              <h3 className="mt-5 font-display text-xl font-semibold">
-                <span className="sr-only">Step {index + 1}: </span>
-                {step.title}
-              </h3>
-              <p className="mt-2 leading-relaxed text-white/80">
-                {step.description}
-              </p>
+              <div className="pt-1.5">
+                <h3 className="text-2xl font-bold">
+                  <span className="sr-only">Step {index + 1}: </span>
+                  {step.title}
+                </h3>
+                <p className="mt-2 max-w-[54ch] text-lg leading-relaxed text-ink-soft">
+                  {step.body}
+                </p>
+              </div>
             </li>
           ))}
         </ol>
-
-        <div className="mt-14 flex flex-col items-start gap-4 rounded-3xl bg-white/10 p-6 ring-1 ring-white/15 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <p className="text-lg font-medium text-pretty">
-            Not sure which option you need? Call and we&apos;ll tell you
-            honestly, in about two minutes.
-          </p>
-          <ButtonLink
-            href={telHref}
-            className="shrink-0 !bg-apricot !text-ink hover:!bg-apricot/90"
-          >
-            <Icon name="phone" className="size-5" />
-            {siteConfig.phone.display}
-          </ButtonLink>
-        </div>
       </Container>
     </section>
   );

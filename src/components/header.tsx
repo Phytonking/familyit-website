@@ -1,84 +1,104 @@
 import Link from "next/link";
-import { siteConfig, telHref } from "@/config/site";
+import { siteConfig } from "@/config/site";
 import { navLinks } from "@/content/landing";
-import { Icon, Logo } from "@/components/icons";
+import { solutions } from "@/content/solutions";
+import { Icon, Mark } from "@/components/icons";
 import { Container } from "@/components/ui";
+
+const linkClass =
+  "rounded-full px-4 py-2 text-lg font-bold text-ink hover:bg-sage";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-cream/90 backdrop-blur supports-[backdrop-filter]:bg-cream/75">
-      <Container className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 border-b border-sage-deep/60 bg-paper/95 backdrop-blur-sm">
+      <Container className="flex h-[4.5rem] items-center justify-between gap-6">
         <Link
           href="/"
-          className="flex items-center gap-2.5 rounded-lg font-display text-xl font-semibold tracking-tight text-ink"
+          className="flex items-center gap-3 rounded-lg text-2xl font-bold tracking-tight text-pine"
         >
-          <Logo className="size-9" />
-          <span>{siteConfig.name}</span>
+          <Mark className="size-10" />
+          {siteConfig.name}
         </Link>
 
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={`/${link.href}`}
-                  className="rounded-full px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-cream-deep hover:text-ink"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+          {/* Solutions menu: native <details>, so it works without JavaScript. */}
+          <details className="group relative">
+            <summary className={`flex cursor-pointer items-center gap-1 ${linkClass}`}>
+              Solutions
+              <Icon name="chevron" className="details-chevron size-5 transition-transform" />
+            </summary>
+            <ul className="absolute left-0 top-full mt-2 w-72 rounded-2xl border border-sage-deep bg-paper p-2 shadow-card">
+              {solutions.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/solutions/${s.slug}`}
+                    className="block rounded-xl px-4 py-3 text-lg font-bold text-ink hover:bg-sage"
+                  >
+                    {s.navLabel}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+          {navLinks.map((link) => (
+            <Link key={link.href} href={link.href} className={linkClass}>
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/#waitlist"
+            className="ml-3 inline-flex min-h-12 items-center rounded-full bg-berry px-6 text-lg font-bold text-white hover:bg-berry-deep"
+          >
+            Join the waitlist
+          </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <a
-            href={telHref}
-            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-teal px-4 py-2 text-sm font-semibold text-white shadow-soft transition-colors hover:bg-teal-deep"
+        {/* Small screens: one menu, also a <details>. */}
+        <details className="relative lg:hidden">
+          <summary
+            className="flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-2 border-pine px-4 text-lg font-bold text-pine"
+            aria-label="Menu"
           >
-            <Icon name="phone" className="size-4" />
-            <span className="hidden sm:inline">{siteConfig.phone.display}</span>
-            <span className="sm:hidden">Call</span>
-          </a>
-
-          {/* No-JS mobile menu using native <details>. */}
-          <details className="relative md:hidden">
-            <summary
-              className="flex size-11 cursor-pointer items-center justify-center rounded-full text-ink hover:bg-cream-deep"
-              aria-label="Menu"
+            Menu
+            <Icon name="chevron" className="details-chevron size-5 transition-transform" />
+          </summary>
+          <nav
+            aria-label="Mobile"
+            className="absolute right-0 top-full mt-3 w-[min(20rem,calc(100vw-3rem))] rounded-2xl border border-sage-deep bg-paper p-3 shadow-card"
+          >
+            <p className="px-3 pb-1 pt-2 text-base font-bold text-ink-soft">Solutions</p>
+            <ul>
+              {solutions.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/solutions/${s.slug}`}
+                    className="block rounded-xl px-3 py-2.5 text-lg font-bold text-ink hover:bg-sage"
+                  >
+                    {s.navLabel}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-2 border-t border-sage-deep pt-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="block rounded-xl px-3 py-2.5 text-lg font-bold text-ink hover:bg-sage"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/#waitlist"
+              className="mt-3 flex min-h-12 items-center justify-center rounded-full bg-berry px-5 text-lg font-bold text-white hover:bg-berry-deep"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                className="size-6"
-                aria-hidden="true"
-              >
-                <path d="M4 7h16M4 12h16M4 17h16" />
-              </svg>
-            </summary>
-            <nav
-              aria-label="Mobile"
-              className="absolute right-0 top-full mt-3 w-56 rounded-2xl bg-white p-2 shadow-soft ring-1 ring-line"
-            >
-              <ul>
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={`/${link.href}`}
-                      className="block rounded-xl px-4 py-2.5 text-base font-medium text-ink hover:bg-cream-deep"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </details>
-        </div>
+              Join the waitlist
+            </Link>
+          </nav>
+        </details>
       </Container>
     </header>
   );

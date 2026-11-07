@@ -1,18 +1,14 @@
 import { absoluteUrl, siteConfig } from "@/config/site";
-import { faqs } from "@/content/landing";
+import type { Solution } from "@/content/solutions";
 
 const orgId = absoluteUrl("/#organization");
-const businessId = absoluteUrl("/#localbusiness");
 const websiteId = absoluteUrl("/#website");
 const logoUrl = absoluteUrl("/icon.svg");
 
-/** Organization + LocalBusiness/ProfessionalService + WebSite, as one graph. */
-export function siteGraph() {
-  const address = {
-    "@type": "PostalAddress",
-    ...siteConfig.address,
-  };
+type Faq = { question: string; answer: string };
 
+/** Organization + WebSite, included on every page. */
+export function siteGraph() {
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -22,56 +18,18 @@ export function siteGraph() {
         name: siteConfig.name,
         legalName: siteConfig.legalName,
         url: siteConfig.url,
-        logo: {
-          "@type": "ImageObject",
-          url: logoUrl,
-        },
-        email: siteConfig.email,
-        telephone: siteConfig.phone.e164,
+        logo: { "@type": "ImageObject", url: logoUrl },
+        email: siteConfig.contactEmail,
         foundingDate: siteConfig.foundingYear,
-        sameAs: siteConfig.socials,
+        ...(siteConfig.socials.length ? { sameAs: siteConfig.socials } : {}),
         contactPoint: [
           {
             "@type": "ContactPoint",
             contactType: "customer support",
-            telephone: siteConfig.phone.e164,
-            email: siteConfig.email,
+            email: siteConfig.contactEmail,
             availableLanguage: ["English"],
           },
         ],
-      },
-      {
-        "@type": ["ProfessionalService", "LocalBusiness"],
-        "@id": businessId,
-        name: siteConfig.name,
-        description: siteConfig.description,
-        url: siteConfig.url,
-        logo: logoUrl,
-        image: absoluteUrl("/opengraph-image"),
-        telephone: siteConfig.phone.e164,
-        email: siteConfig.email,
-        priceRange: siteConfig.priceRange,
-        address,
-        areaServed: siteConfig.serviceArea.places.map((place) => ({
-          "@type": "Place",
-          name: place,
-        })),
-        openingHoursSpecification: siteConfig.hours.schema.map((h) => ({
-          "@type": "OpeningHoursSpecification",
-          ...h,
-        })),
-        parentOrganization: { "@id": orgId },
-        hasOfferCatalog: {
-          "@type": "OfferCatalog",
-          name: "Home tech support plans",
-          itemListElement: siteConfig.plans.map((plan) => ({
-            "@type": "Offer",
-            name: plan.name,
-            description: plan.description,
-            price: plan.price.replace(/[^0-9.]/g, ""),
-            priceCurrency: "USD",
-          })),
-        },
       },
       {
         "@type": "WebSite",
@@ -86,17 +44,49 @@ export function siteGraph() {
   };
 }
 
-export function faqPage() {
+export function faqPage(faqs: Faq[], pageUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${pageUrl}#faq`,
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
     })),
+  };
+}
+
+/** WebPage + Service for a solution page. FAQPage is emitted separately. */
+export function solutionGraph(solution: Solution) {
+  const pageUrl = absoluteUrl(`/solutions/${solution.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": pageUrl,
+        url: pageUrl,
+        name: solution.title,
+        description: solution.description,
+        isPartOf: { "@id": websiteId },
+        about: { "@id": `${pageUrl}#service` },
+        inLanguage: "en-US",
+      },
+      {
+        "@type": "Service",
+        "@id": `${pageUrl}#service`,
+        name: `${siteConfig.name}: ${solution.title}`,
+        description: solution.description,
+        serviceType: "Technology care and support",
+        provider: { "@id": orgId },
+        areaServed: siteConfig.product.initialRegions,
+        audience: {
+          "@type": "Audience",
+          audienceType: solution.navLabel.replace(/^For /, ""),
+        },
+        url: pageUrl,
+      },
+    ],
   };
 }

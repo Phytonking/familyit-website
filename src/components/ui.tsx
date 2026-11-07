@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
-/** Horizontal page gutter + max width. */
+/** Page gutter and max width. */
 export function Container({
   className = "",
   children,
@@ -10,64 +10,69 @@ export function Container({
   children: ReactNode;
 }) {
   return (
-    <div className={`mx-auto w-full max-w-6xl px-5 sm:px-8 ${className}`}>
-      {children}
-    </div>
+    <div className={`mx-auto w-full max-w-6xl px-6 sm:px-10 ${className}`}>{children}</div>
   );
 }
 
-/** Eyebrow + heading + optional lede, used at the top of each section. */
-export function SectionHeading({
+/**
+ * Section layout used across the site: a narrow heading column on the left,
+ * content hanging to the right. Collapses to a single column on small screens.
+ */
+export function SplitSection({
   id,
-  eyebrow,
-  title,
-  lede,
-  align = "center",
+  heading,
+  headingId,
+  children,
+  className = "",
+  tone = "paper",
 }: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  lede?: string;
-  align?: "center" | "left";
+  id?: string;
+  heading: ReactNode;
+  headingId: string;
+  children: ReactNode;
+  className?: string;
+  tone?: "paper" | "sage" | "pine";
 }) {
-  const alignment = align === "center" ? "mx-auto text-center" : "text-left";
+  const tones = {
+    paper: "",
+    sage: "bg-sage",
+    pine: "bg-pine text-paper",
+  };
   return (
-    <div className={`max-w-2xl ${alignment}`}>
-      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-apricot-deep">
-        {eyebrow}
-      </p>
-      <h2
-        id={id}
-        className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl text-balance"
-      >
-        {title}
-      </h2>
-      {lede ? (
-        <p className="mt-4 text-lg leading-relaxed text-ink-soft text-pretty">
-          {lede}
-        </p>
-      ) : null}
-    </div>
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className={`scroll-mt-24 py-20 sm:py-28 ${tones[tone]} ${className}`}
+    >
+      <Container className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <h2
+            id={headingId}
+            className="text-3xl font-bold leading-tight tracking-tight text-balance sm:text-4xl"
+          >
+            {heading}
+          </h2>
+        </div>
+        <div className="lg:col-span-7">{children}</div>
+      </Container>
+    </section>
   );
 }
 
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "onPine";
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-colors duration-150 min-h-12";
+  "inline-flex min-h-14 items-center justify-center gap-2 rounded-full px-7 text-lg font-bold transition-colors duration-150";
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-teal text-white hover:bg-teal-deep shadow-soft",
-  secondary:
-    "bg-white text-teal ring-1 ring-inset ring-line hover:bg-teal-soft hover:ring-teal/30",
-  ghost: "text-teal hover:bg-teal-soft",
+  primary: "bg-berry text-white hover:bg-berry-deep",
+  secondary: "border-2 border-pine text-pine hover:bg-sage",
+  onPine: "bg-paper text-pine hover:bg-sage",
 };
 
-type ButtonLinkProps = ComponentProps<typeof Link> & {
-  variant?: ButtonVariant;
-};
+type ButtonLinkProps = ComponentProps<typeof Link> & { variant?: ButtonVariant };
 
-/** Anchor styled as a button. Always a link, so it works without JS. */
+/** A link styled as a button. Works without JavaScript. */
 export function ButtonLink({
   variant = "primary",
   className = "",
@@ -75,8 +80,17 @@ export function ButtonLink({
   ...rest
 }: ButtonLinkProps) {
   return (
+    <Link className={`${buttonBase} ${buttonVariants[variant]} ${className}`} {...rest}>
+      {children}
+    </Link>
+  );
+}
+
+/** Inline text link with a clear underline. */
+export function TextLink({ className = "", children, ...rest }: ComponentProps<typeof Link>) {
+  return (
     <Link
-      className={`${buttonBase} ${buttonVariants[variant]} ${className}`}
+      className={`font-bold text-moss underline decoration-2 underline-offset-4 hover:text-pine ${className}`}
       {...rest}
     >
       {children}
@@ -84,11 +98,11 @@ export function ButtonLink({
   );
 }
 
-/** Small rounded label. */
-export function Pill({ children }: { children: ReactNode }) {
+/** Body paragraphs with a comfortable measure. */
+export function Prose({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-cream-deep px-3 py-1 text-sm font-medium text-ink-soft">
+    <div className={`max-w-[62ch] space-y-5 text-lg leading-relaxed sm:text-xl ${className}`}>
       {children}
-    </span>
+    </div>
   );
 }
