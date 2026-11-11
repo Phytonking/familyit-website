@@ -1,4 +1,4 @@
-// Usage: node familyit-shot.mjs <url> <width> <height> <out.png>
+// Usage: node scripts/screenshot.mjs <url> <width> <height> <out.png> [y]
 // Requires Chrome started with --remote-debugging-port=9333.
 import { writeFileSync } from "node:fs";
 

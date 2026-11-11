@@ -7,7 +7,11 @@ action for the waitlist. No CMS, auth or database.
 
 ## Run it
 
+Requires Node.js 20.9 or newer (Next.js 16's minimum) and npm.
+
 ```bash
+git clone git@github.com:Phytonking/familyit-website.git
+cd familyit-website
 npm install
 npm run dev      # http://localhost:3000
 npm run lint
@@ -17,6 +21,46 @@ npm start
 
 Waitlist signups are appended to `data/waitlist.ndjson` (gitignored) by
 default. See `src/lib/waitlist/README.md` to plug in a real provider.
+
+No environment variables are needed to run locally. `.env*` files are
+gitignored; put provider keys in `.env.local`.
+
+## Editing the site
+
+Most edits are text changes in three places; components rarely need touching.
+
+| To change… | Edit |
+| --- | --- |
+| Facts: domain, contact email, launch window, regions, pricing note | `src/config/site.ts` |
+| Home page copy (hero, problem, solution, benefits, how it works, FAQ, "who it's for" cards) | `src/content/landing.ts` |
+| Solution page copy (hero, problem, solution, benefits, FAQs, waitlist heading, page title and meta description) | `src/content/solutions.ts` |
+| Waitlist "who is this for" options | `src/content/audiences.ts` |
+| Privacy and terms text | `src/app/privacy/page.tsx`, `src/app/terms/page.tsx` |
+| Section layout and styling | `src/components/sections/*.tsx`, `src/components/solution-page.tsx`, `src/app/globals.css` |
+
+Each route is a folder under `src/app/` (App Router): `/` is
+`src/app/page.tsx`, `/solutions/seniors` is
+`src/app/solutions/seniors/page.tsx`, and so on. The four solution pages are
+thin wrappers that render the shared `SolutionPage` template with their slug.
+Header, footer and sitemap read from `src/content/solutions.ts`, so
+navigation updates itself.
+
+### Adding a solution page
+
+1. Add the id to `audienceIds` in `src/content/audiences.ts`, and a matching
+   entry to `waitlistAudienceOptions` so the form can pre-select it.
+2. Add a `Solution` object to `solutions` in `src/content/solutions.ts`
+   (TypeScript will tell you which fields are missing).
+3. Add a card to `audienceOverview` in `src/content/landing.ts` if it should
+   appear in the home page's "who it's for" section.
+4. Copy `src/app/solutions/seniors/` to `src/app/solutions/<slug>/` and change
+   the slug in both `page.tsx` and `opengraph-image.tsx`.
+5. `npm run build` and check the new route appears in the output.
+
+### Making changes
+
+Branch off `main`, run `npm run lint && npm run build` before pushing, and
+open a pull request. Both must pass; the build also type-checks.
 
 ## Pages
 
